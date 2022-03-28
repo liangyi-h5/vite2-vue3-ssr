@@ -2,7 +2,7 @@
   "name": "ssr-vue",
   "private": true,
   "version": "0.0.0",
-  "module": "esnext",
+  "author": "Liangxian Li",
   "scripts": {
     "serve": "vite",
     "build": "vue-tsc --noEmit && vite build",
