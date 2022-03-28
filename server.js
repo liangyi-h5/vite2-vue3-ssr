@@ -64,7 +64,7 @@ async function createServer(
       } else {
         template = indexProd
         // @ts-ignore
-        render = require('./dist/server/entry-server.js').render
+        render = require('./dist/server/assets/entry-server.js').render
       }
 
       console.log('url', url)
