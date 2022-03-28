@@ -1,9 +1,9 @@
 
 
 <template>
-  <router-link to="/">Home</router-link>|
+  <!-- <router-link to="/">Home</router-link>|
   <router-link to="/about">About</router-link>|
-  <a href="javascript:void(0);" to="/about" @click="go('/about')">About</a>|
+  <a href="javascript:void(0);" to="/about" @click="go('/about')">About</a>| -->
   <router-view v-slot="{ Component }">
     <Suspense>
       <component :is="Component" />
@@ -15,18 +15,18 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted } from 'vue'
-// console.log(import.meta.env)
-const router = useRouter()
-const a = useRoute()
-onMounted(() => {
-  console.log('mounted')
-})
-const go = (path:string) => {
-  // debugger
-  router.push({
-    name: 'about'
-  })
-}
+console.log(import.meta.env.VITE_CONFIG_VALUE, 'VITE_CONFIG_VALUE')
+// const router = useRouter()
+// const a = useRoute()
+// onMounted(() => {
+//   console.log('mounted')
+// })
+// const go = (path:string) => {
+//   // debugger
+//   router.push({
+//     name: 'about'
+//   })
+// }
 </script>
 <style>
 #app {

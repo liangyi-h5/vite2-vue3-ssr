@@ -1,0 +1,69 @@
+<template>
+  <div class='json-to-excel'>
+    <textarea v-model="text" class='textarea'></textarea><br/>
+    <button @click='onJsonToExcel'>json to excel</button><br/>
+    <input id='ipt' type="file" @change='onExcelToJson' />excel to json<br/>
+  </div>
+</template>
+
+<script setup lang='ts'>
+import { ref, onMounted } from 'vue'
+import { read, writeFileXLSX, utils } from 'xlsx'
+import { checkIsJson, checkIsArray, checkIsObject, checkIsString } from '../../utils'
+// console.log('json-to-excel', read, writeFileXLSX)
+const text = ref('')
+const onJsonToExcel = () => {
+  console.log(text.value)
+  const str = text.value
+  if (!str) {
+    return
+  }
+  if (checkIsJson(str)) {
+    const list = JSON.parse(str)
+    if (checkIsArray(list)) {
+      for(let i = 0; i < list.length; i++) {
+        if (checkIsObject(list[i])) {
+          for (const key in list[i]) {
+            if (!checkIsString(list[i][key])) {
+              alert(`错误，必须是[{ "en": "Daily check-in", "zh": "中文"}, { "en": "1st", "zh": "中文3"}] 类型json字符串`)
+              return
+            }
+          }
+        } else {
+          return
+          alert(`错误，必须是[{ "en": "Daily check-in", "zh": "中文"}, { "en": "1st", "zh": "中文3"}] 类型json字符串`)
+        }
+      }
+      const ws = utils.json_to_sheet(list)
+      const workbook = {
+        SheetNames: ['sheet'],
+        Sheets: {
+          sheet: ws
+        }
+      }
+      writeFileXLSX(workbook, 't.excel')
+    } else {
+      return
+      alert('错误，不是一个规范的json字符串')
+    }
+  } else {
+    return
+    alert('错误，不是一个规范的json字符串')
+  }
+  
+  const onExcelToJson = (e) => {
+    console.log('change', e)
+  }
+  onMounted(() => {
+    const a = document.querySelector('#ipt')
+    console.log('mounted', a)
+  })
+}
+</script>
+
+<style scoped>
+.textarea{
+  width: 400px;
+  height: 400px;
+}
+</style>
