@@ -35,3 +35,12 @@ vscode插件安装
 > TypeScript Vue Plugin (Volar)
 
 当前工作区禁用 Vetur 插件 （ps: 不禁用回报红线，不影响运行，但是不好看）
+
+## [PM2](https://pm2.keymetrics.io/docs/usage/cluster-mode/) 多进程启动
+> pm2 start ecosystem.config.js
+
+关闭进程：
+> pm2 delete all
+
+### .env环境变量配置
+在项目跟目录新建.env文件 参照.env.example修改环境变量配置

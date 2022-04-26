@@ -15,7 +15,7 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted } from 'vue'
-// console.log(import.meta.env)
+console.log(import.meta.env.VITE_CONFIG_VALUE, 'VITE_CONFIG_VALUE')
 const router = useRouter()
 const a = useRoute()
 onMounted(() => {
