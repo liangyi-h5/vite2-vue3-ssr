@@ -15,7 +15,13 @@
     "build:server:noExternal": "vite build --config vite.config.noexternal.js --ssr src/entry-server.js --outDir dist/server",
     "generate": "vite build --ssrManifest --outDir dist/static && npm run build:server && node prerender",
     "start": "cross-env NODE_ENV=production node -r dotenv/config server",
-    "debug": "node --inspect-brk server"
+    "debug": "node --inspect-brk server",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git commit -m 'docs: 更改CHANGELOG.md'",
+    "release-patch": "npm run pre-release && npm version patch -m \"tag: 版本更新至 %s patch\" && npm run branch-merge",
+    "release-minor": "npm run pre-release && npm version minor -m \"tag: 版本更新至 %s minor\" && npm run branch-merge",
+    "release-major": "npm run pre-release && npm version major -m \"tag: 版本更新至 %s major\" && npm run branch-merge",
+    "pre-release": "git checkout develop && git pull && git checkout master && git pull && git merge develop ",
+    "branch-merge": "git push --tags && git push && git checkout develop && git merge master && git push "
   },
   "dependencies": {
     "compression": "^1.7.4",
