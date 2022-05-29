@@ -70,11 +70,15 @@ async function createServer(
         render = require('./dist/server/assets/entry-server.js').render
       }
 
-      const [appHtml, preloadLinks] = await render(url, manifest)
+      const [appHtml, preloadLinks, metaInfo] = await render(url, manifest)
 
+      const title = metaInfo.title || '未设置标题'
+      const meta = metaInfo.meta || ''
       const html = template
         .replace(`<!--preload-links-->`, preloadLinks)
         .replace(`<!--ssr-outlet-->`, appHtml)
+        .replace(`<!--title-->`, title)
+        .replace(`<!--meta-->`, meta)
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (e) {
