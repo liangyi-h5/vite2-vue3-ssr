@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang='ts'>
+import { useTest } from '../../hook/useTest'
+useTest()
 console.log('about')
 const about = 'about'
 </script>

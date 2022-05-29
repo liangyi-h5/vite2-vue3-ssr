@@ -1,9 +1,9 @@
 
 
 <template>
-  <!-- <router-link to="/">Home</router-link>|
-  <router-link to="/about">About</router-link>|
-  <a href="javascript:void(0);" to="/about" @click="go('/about')">About</a>| -->
+  <!-- <a href="javascript:void(0);" to="/about" @click="go('/about')">About</a>|<br/> -->
+  <router-link to='/about'>about</router-link><br/>
+  <router-link to='/json-to-excel'>json to excel</router-link>
   <router-view v-slot="{ Component }">
     <Suspense>
       <component :is="Component" />
@@ -16,17 +16,17 @@
 import { useRouter, useRoute } from 'vue-router'
 import { onMounted } from 'vue'
 console.log(import.meta.env.VITE_CONFIG_VALUE, 'VITE_CONFIG_VALUE')
-// const router = useRouter()
+const router = useRouter()
 // const a = useRoute()
 // onMounted(() => {
 //   console.log('mounted')
 // })
-// const go = (path:string) => {
-//   // debugger
-//   router.push({
-//     name: 'about'
-//   })
-// }
+const go = (path:string) => {
+  // debugger
+  router.push({
+    name: 'about'
+  })
+}
 </script>
 <style>
 #app {

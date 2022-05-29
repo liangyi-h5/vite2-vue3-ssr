@@ -6,6 +6,8 @@
 </template>
 
 <script setup lang='ts'>
+import { useTest } from '../../hook/useTest'
+useTest()
 </script>
 
 <style scoped>
