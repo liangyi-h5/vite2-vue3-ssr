@@ -12,6 +12,13 @@ import { createRouter } from './router'
 export function createApp() {
   const app = createSSRApp(App)
   const router = createRouter()
+  router.beforeEach((to, from) => {
+    if (!import.meta.env.SSR) {
+      const metaInfo:any = to.meta.metaInfo || {}
+      document.title = metaInfo.title ? metaInfo.title : '没有配置title' 
+    }
+
+  })
   app.use(router)
   return { app, router }
 }

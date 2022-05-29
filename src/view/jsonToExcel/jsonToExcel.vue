@@ -2,7 +2,7 @@
   <div class='json-to-excel'>
     <textarea v-model="text" class='textarea'></textarea><br/>
     <button @click='onJsonToExcel'>json to excel</button><br/>
-    <input id='ipt' type="file" @change='onExcelToJson' />excel to json<br/>
+    <input id='ipt' accept='.json' type="file" @change='onExcelToJson' />excel to json<br/>
   </div>
 </template>
 
@@ -11,6 +11,8 @@ import { ref, onMounted } from 'vue'
 import { read, writeFileXLSX, utils } from 'xlsx'
 import { checkIsJson, checkIsArray, checkIsObject, checkIsString } from '../../utils'
 // console.log('json-to-excel', read, writeFileXLSX)
+import { useTest } from '../../hook/useTest'
+useTest()
 const text = ref('')
 const onJsonToExcel = () => {
   console.log(text.value)
@@ -51,14 +53,24 @@ const onJsonToExcel = () => {
     alert('错误，不是一个规范的json字符串')
   }
   
-  const onExcelToJson = (e) => {
-    console.log('change', e)
-  }
-  onMounted(() => {
-    const a = document.querySelector('#ipt')
-    console.log('mounted', a)
-  })
 }
+const onExcelToJson = (e:any) => {
+    console.log('change', e)
+}
+onMounted(() => {
+  const ipt = document.querySelector('#ipt')
+  if (ipt) {
+    ipt.addEventListener('change', (e:any) => {
+      const reader = new FileReader()
+      reader.readAsText(e.target.files[0], 'UTF-8')
+      reader.onload = (e:any) => {
+        const fileContent = e.target.result
+        console.log(fileContent, 'fileContent')
+        // 拿到文件文本内容
+      }
+    })
+  }
+})
 </script>
 
 <style scoped>
