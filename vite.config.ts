@@ -10,7 +10,41 @@ const path = require('path')
 const outputDir = path.join(process.cwd(), './dist')
 const isProd = process.env.NODE_ENV === 'production'
 
+
+const isClient = process.env.TARGET_ENV === 'client'
 const timestamp = Date.now() / 1000
+
+const buildOutput = () => {
+  if (isClient && isProd) {
+    // 客户端代码拆分
+    return {
+      manualChunks(id) {
+        if (id.includes('xlsx')) {
+          // 拆分 xlsx
+          return 'xlsx'
+        }
+        if (id.includes('node_modules')) {
+          if (id.includes('vue-router')) {
+            // 拆分vue-router
+            return 'router'
+          }
+          if (id.includes('vue')) {
+            // 拆分vue
+            return 'vue'
+          }
+          return 'vendor'
+        }
+      }
+    }
+  } else {
+    // 服务端代码打包
+    return {
+      entryFileNames: `assets/[name].js`,
+      chunkFileNames: `assets/[name].js`,
+      assetFileNames: `assets/[name].[ext]`
+    }
+  }
+}
 const createVisualizer = () => {
   return isProd ? visualizer({
     filename: './dist/visualizer.html', // 文件名 stats.html
@@ -59,17 +93,9 @@ module.exports = {
     createVisualizer()
   ],
   build: {
-    minify: false,
+    minify: !isProd,
     rollupOptions: {
-      output: isProd ? {
-        entryFileNames: `assets/[name].${timestamp}.js`,
-        chunkFileNames: `assets/[name].${timestamp}.js`,
-        assetFileNames: `assets/[name].${timestamp}.[ext]`
-      } : {
-        entryFileNames: `assets/[name].js`,
-        chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`
-      }
+      output: buildOutput()
     }
   }
 }

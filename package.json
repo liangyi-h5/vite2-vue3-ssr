@@ -1,7 +1,7 @@
 {
   "name": "ssr-vue",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Liangxian Li",
   "scripts": {
     "serve": "vite",
@@ -10,8 +10,8 @@
     "dev:ssr": "nodemon -r dotenv/config ./server.js ",
     "build:ssr": "npm run build:client && npm run build:server",
     "build:noExternal": "npm run build:client && npm run build:server:noExternal",
-    "build:client": "vite build --ssrManifest --outDir dist/client",
-    "build:server": "vite build --ssr src/entry-server.ts --outDir dist/server",
+    "build:client": "cross-env TARGET_ENV=client vite build --ssrManifest --outDir dist/client",
+    "build:server": "cross-env TARGET_ENV=server vite build --ssr src/entry-server.ts --outDir dist/server",
     "build:server:noExternal": "vite build --config vite.config.noexternal.js --ssr src/entry-server.ts --outDir dist/server",
     "generate": "vite build --ssrManifest --outDir dist/static && npm run build:server && node prerender",
     "start": "cross-env NODE_ENV=production node -r dotenv/config server",
