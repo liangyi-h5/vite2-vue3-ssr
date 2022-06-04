@@ -15,10 +15,14 @@ const isClient = process.env.TARGET_ENV === 'client'
 const timestamp = Date.now() / 1000
 
 const buildOutput = () => {
-  if (isClient && isProd) {
-    // 客户端代码拆分
-    return {
-      manualChunks(id) {
+  if (isProd) {
+    let config:any = {
+      entryFileNames: `assets/js/[name].[hash].js`,
+      chunkFileNames: `assets/js/[name].[hash].js`,
+      assetFileNames: `assets/[ext]/[name].[hash].[ext]`
+    }
+    if (isClient) {
+      config.manualChunks = (id) => {
         if (id.includes('xlsx')) {
           // 拆分 xlsx
           return 'xlsx'
@@ -37,7 +41,6 @@ const buildOutput = () => {
       }
     }
   } else {
-    // 服务端代码打包
     return {
       entryFileNames: `assets/[name].js`,
       chunkFileNames: `assets/[name].js`,
@@ -92,10 +95,19 @@ module.exports = {
     },
     createVisualizer()
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src')
+    }
+  },
   build: {
-    minify: !isProd,
+    minify: isProd,
     rollupOptions: {
       output: buildOutput()
-    }
+    },
+    assetsInlineLimit: 4096, // 默认4kb
+    sourcemap: false, // map
+    chunkSizeWarningLimit: 1500, // 最大文件警告
+    manifest: !isClient, // 服务端打包一份 manifest.json 用来获取 entry.server.[hash].js  文件
   }
 }

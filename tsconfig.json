@@ -12,7 +12,10 @@
     "types": [
       "node"
     ],
-    "lib": ["esnext", "dom"]
+    "lib": ["esnext", "dom"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/entry-server.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -7,7 +7,12 @@ const PORT = process.env.PORT || 3000
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD
 const isProd = process.env.NODE_ENV === 'production'
 
-async function createServer(
+const entryServer = isProd
+  // @ts-ignore
+  ? `./dist/server/${require('./dist/server/manifest.json')['src/entry-server.ts'].file}`
+  : '/src/entry-server.ts'
+
+  async function createServer(
   root = process.cwd(),
 ) {
   const resolve = (p) => path.resolve(__dirname, p)
@@ -63,11 +68,11 @@ async function createServer(
         // always read fresh template in dev
         template = fs.readFileSync(resolve('index.html'), 'utf-8')
         template = await vite.transformIndexHtml(url, template)
-        render = (await vite.ssrLoadModule('/src/entry-server.ts')).render
+        render = (await vite.ssrLoadModule(entryServer)).render
       } else {
         template = indexProd
         // @ts-ignore
-        render = require('./dist/server/assets/entry-server.js').render
+        render = require(entryServer).render
       }
 
       const [appHtml, preloadLinks, metaInfo] = await render(url, manifest)
