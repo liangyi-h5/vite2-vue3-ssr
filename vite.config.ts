@@ -14,6 +14,25 @@ const isProd = process.env.NODE_ENV === 'production'
 const isClient = process.env.TARGET_ENV === 'client'
 const timestamp = Date.now() / 1000
 
+/**
+ * @des 配置对应打包拆分输出名称
+ */
+const manualChunksConfig = [
+  {
+    regex: /^.*(node_modules).*(vue\/).*$/,
+    // regex: /^.*(node_modules).*(?!\1)(?:vue\/|vue-router\/).*$/,
+    name: 'vue'
+  },
+  {
+    regex: /^.*(node_modules).*(vue-router\/).*$/,
+    name: 'router'
+  },
+  {
+    regex: /^.*(node_modules).*(xlsx\/).*$/,
+    name: 'xlsx'
+  }
+]
+
 const buildOutput = () => {
   if (isProd) {
     let config:any = {
@@ -23,23 +42,13 @@ const buildOutput = () => {
     }
     if (isClient) {
       config.manualChunks = (id) => {
-        if (id.includes('xlsx')) {
-          // 拆分 xlsx
-          return 'xlsx'
-        }
-        if (id.includes('node_modules')) {
-          if (id.includes('vue-router')) {
-            // 拆分vue-router
-            return 'router'
-          }
-          if (id.includes('vue')) {
-            // 拆分vue
-            return 'vue'
-          }
-          return 'vendor'
+        const [regex] = manualChunksConfig.filter(item => item.regex.test(id))
+        if (regex) {
+          return regex.name
         }
       }
     }
+    return config
   } else {
     return {
       entryFileNames: `assets/[name].js`,
@@ -56,6 +65,7 @@ const createVisualizer = () => {
     // projectRoot: outputDir
   }) : null
 }
+
 /**
  * @type {import('vite').UserConfig}
  */
