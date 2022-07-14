@@ -119,5 +119,14 @@ module.exports = {
     sourcemap: false, // map
     chunkSizeWarningLimit: 1500, // 最大文件警告
     manifest: !isClient, // 服务端打包一份 manifest.json 用来获取 entry.server.[hash].js  文件
+    output: isProd ? {
+      entryFileNames: `assets/[name].${timestamp}.js`,
+      chunkFileNames: `assets/[name].${timestamp}.js`,
+      assetFileNames: `assets/[name].${timestamp}.[ext]`
+    } : {
+      entryFileNames: `assets/[name].js`,
+      chunkFileNames: `assets/[name].js`,
+      assetFileNames: `assets/[name].[ext]`
+    }
   }
 }
