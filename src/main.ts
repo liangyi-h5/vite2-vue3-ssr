@@ -5,6 +5,8 @@
 import App from './App.vue'
 import { createSSRApp } from 'vue'
 import { createRouter } from './router'
+import {createPinia } from 'pinia'
+import { createMiniPinia } from './pinia'
 
 // SSR requires a fresh app instance per request, therefore we export a function
 // that creates a fresh app instance. If using Vuex, we'd also be creating a
@@ -20,6 +22,12 @@ export function createApp() {
 
   })
   app.use(router)
+  console.log(router, 'router')
+  const pinia = createPinia()
+  const minipinia = createMiniPinia()
+  console.log(pinia, 'pinia')
+  app.use(pinia)
+  app.use(minipinia)
   return { app, router }
 }
 
