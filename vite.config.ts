@@ -1,18 +1,20 @@
-const vuePlugin = require('@vitejs/plugin-vue')
-const vueJsx = require('@vitejs/plugin-vue-jsx')
+// es6 模块化注意相关插件兼容性，可 commonjs 混用
+import vuePlugin from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import { visualizer } from 'rollup-plugin-visualizer'
+import { defineConfig } from 'vite'
+// @ts-ignore
+import path from 'path'
+// const path = require('path')
+
 const virtualFile = '@virtual-file'
 const virtualId = '\0' + virtualFile
 const nestedVirtualFile = '@nested-virtual-file'
 const nestedVirtualId = '\0' + nestedVirtualFile
-const { visualizer } = require('rollup-plugin-visualizer')
-const path = require('path')
-
-const outputDir = path.join(process.cwd(), './dist')
+const outputDir = path.join(process.cwd(), './server/dist')
 const isProd = process.env.NODE_ENV === 'production'
 
-
 const isClient = process.env.TARGET_ENV === 'client'
-const timestamp = Date.now() / 1000
 
 /**
  * @des 配置对应打包拆分输出名称
@@ -59,74 +61,73 @@ const buildOutput = () => {
 }
 const createVisualizer = () => {
   return isProd ? visualizer({
-    filename: './dist/visualizer.html', // 文件名 stats.html
+    filename: `${outputDir}/${isClient ? 'client' : 'server'}/visualizer.html`, // 文件名 stats.html
     gzipSize: true, // 是否收集gzip打包后的大小
     open: false, // 是否打开分析文件
-    // projectRoot: outputDir
+    projectRoot: outputDir
   }) : null
 }
 
 /**
  * @type {import('vite').UserConfig}
  */
-module.exports = {
-  plugins: [
-    vuePlugin(),
-    vueJsx(),
-    {
-      name: 'virtual',
-      resolveId(id) {
-        if (id === '@foo') {
-          return id
+export default defineConfig(({ command, mode }) => {
+  if (command === 'serve') {
+    // dev 独有配置
+  } else {
+    // command === 'build'
+    // build 独有配置
+  }
+  return {
+    plugins: [
+      vuePlugin(),
+      vueJsx(),
+      {
+        name: 'virtual',
+        resolveId(id) {
+          if (id === '@foo') {
+            return id
+          }
+        },
+        load(id) {
+          if (id === '@foo') {
+            return `export default { msg: 'hi' }`
+          }
         }
       },
-      load(id) {
-        if (id === '@foo') {
-          return `export default { msg: 'hi' }`
-        }
-      }
-    },
-    {
-      name: 'virtual-module',
-      resolveId(id) {
-        if (id === virtualFile) {
-          return virtualId
-        } else if (id === nestedVirtualFile) {
-          return nestedVirtualId
+      {
+        name: 'virtual-module',
+        resolveId(id) {
+          if (id === virtualFile) {
+            return virtualId
+          } else if (id === nestedVirtualFile) {
+            return nestedVirtualId
+          }
+        },
+        load(id) {
+          if (id === virtualId) {
+            return `export { msg } from "@nested-virtual-file";`
+          } else if (id === nestedVirtualId) {
+            return `export const msg = "[success] from conventional virtual file"`
+          }
         }
       },
-      load(id) {
-        if (id === virtualId) {
-          return `export { msg } from "@nested-virtual-file";`
-        } else if (id === nestedVirtualId) {
-          return `export const msg = "[success] from conventional virtual file"`
-        }
+      createVisualizer()
+    ],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src')
       }
     },
-    createVisualizer()
-  ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src')
-    }
-  },
-  build: {
-    minify: isProd,
-    rollupOptions: {
-      output: buildOutput()
-    },
-    assetsInlineLimit: 4096, // 默认4kb
-    sourcemap: false, // map
-    chunkSizeWarningLimit: 1500, // 最大文件警告
-    manifest: !isClient, // 服务端打包一份 manifest.json 用来获取 entry.server.[hash].js  文件
-    output: isProd ? {
-      entryFileNames: `assets/[name].${timestamp}.js`,
-      chunkFileNames: `assets/[name].${timestamp}.js`,
-      assetFileNames: `assets/[name].${timestamp}.[ext]`
-    } : {
-      entryFileNames: `assets/[name].js`,
-      chunkFileNames: `assets/[name].js`,
-      assetFileNames: `assets/[name].[ext]`
+    build: {
+      minify: isProd,
+      rollupOptions: {
+        output: buildOutput()
+      },
+      assetsInlineLimit: 4096, // 默认4kb
+      sourcemap: false, // map
+      chunkSizeWarningLimit: 1500, // 最大文件警告
+      manifest: !isClient // 服务端打包一份 manifest.json 用来获取 entry.server.[hash].js  文件
     }
   }
-}
+})

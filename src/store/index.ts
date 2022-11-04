@@ -4,7 +4,7 @@ import { defineStore as defineMiniStore } from '../pinia/store'
 export const useIndexStore = defineStore('index', {
   state: () => {
     return {
-      a: '12'
+      a: 'init state'
     }
   },
   actions: {
@@ -34,8 +34,8 @@ export const useminiPiniaStore = defineMiniStore('index', {
   },
   actions: {
     increment(v:string) {
-      this.a = v
-      this.$t = r
+      // this.a = v
+      // this.$t = r
     },
   },
 })

@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'vite2-vue3-ssr',
-    script: 'server.js',
+    script: 'server/index.js',
     env: {
       NODE_ENV: 'production'
     },

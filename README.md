@@ -1,5 +1,8 @@
 # Vue 3 + Vue-Router + Typescript + Vite + express
 
+# 项目查看地址：<a href="http://124.220.185.110" >http://124.220.185.110/</a>
+
+
 基于vite2 搭建的 express + vue3 服务端渲染项目
 
 [搭建指南](https://cn.vitejs.dev/guide/ssr.html)
@@ -37,10 +40,15 @@ vscode插件安装
 当前工作区禁用 Vetur 插件 （ps: 不禁用回报红线，不影响运行，但是不好看）
 
 ## [PM2](https://pm2.keymetrics.io/docs/usage/cluster-mode/) 多进程启动
-> pm2 start ecosystem.config.js
+
+全局安装pm2
+> npm i -g pm2
+
+启动
+> npm run pm2:start
 
 关闭进程：
-> pm2 delete all
+> npm run pm2:stop
 
 ### .env环境变量配置
 在项目跟目录新建.env文件 参照.env.example修改环境变量配置

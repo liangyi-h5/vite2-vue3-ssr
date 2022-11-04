@@ -45,9 +45,7 @@ export function defineStore(idOrOptions: any, setup: any): StoreDefinition<any,a
   // 如果是函数 说明是一个setup语法
   const isSetupStore = typeof setup === 'function'
 
-  function useStore():{
-    $id: string
-  } {
+  function useStore():any {
     // 拿到app实例
     const currentInstance = getCurrentInstance()
     // 拿到 main.js 内  app.use( createPinia() ) 时 setActivePinia 的 pinia

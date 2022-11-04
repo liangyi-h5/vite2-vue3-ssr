@@ -26,6 +26,6 @@ export function createApp() {
   const minipinia = createMiniPinia()
   app.use(pinia)
   app.use(minipinia)
-  return { app, router }
+  return { app, router, minipinia, pinia }
 }
 
