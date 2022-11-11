@@ -5,7 +5,7 @@
 import App from './App.vue'
 import { createSSRApp } from 'vue'
 import { createRouter } from './router'
-import {createPinia } from 'pinia'
+import { createPinia } from 'pinia'
 import { createMiniPinia } from './pinia'
 
 // SSR requires a fresh app instance per request, therefore we export a function
@@ -19,7 +19,6 @@ export function createApp() {
       const metaInfo:any = to.meta.metaInfo || {}
       document.title = metaInfo.title ? metaInfo.title : '没有配置title' 
     }
-
   })
   app.use(router)
   const pinia = createPinia()

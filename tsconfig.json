@@ -17,6 +17,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/entry-server.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/entry-server.ts", "src/router/prerenderRouter.js", "src/router/prerenderRouter.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

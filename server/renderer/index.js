@@ -38,8 +38,10 @@ const render = async (req, res) => {
       // @ts-ignore
       render = require(entryServer).render
     }
-
-    const [appHtml, preloadLinks, metaInfo, minipinia, pinia] = await render(url, manifest)
+    const ssrContent = {
+      ip: req.customersIp || 'unknow'
+    }
+    const [appHtml, preloadLinks, metaInfo, minipinia, pinia] = await render(url, manifest, ssrContent)
 
     const title = metaInfo.title || '未设置标题'
     const meta = metaInfo.meta || ''

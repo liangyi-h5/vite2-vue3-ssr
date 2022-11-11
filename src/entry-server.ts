@@ -1,14 +1,45 @@
 import { createApp } from './main'
 import { renderToString } from 'vue/server-renderer'
 import path, { basename } from 'path'
+import { useIndexStore } from './store'
 
-export async function render(url:string, manifest:any) {
+export async function render(url:string, manifest:any, ssrContent: {
+  ip?: string
+} = {}, prerender: boolean = false) {
   const { app, router, minipinia, pinia } = createApp()
 
   // set the router to the desired URL before rendering
   router.push(url)
   await router.isReady()
+  const store = useIndexStore()
+  // 设置 ip
+  ssrContent.ip && store.setIp(ssrContent.ip)
 
+  const to = router.currentRoute
+  const matchedRoute = to.value.matched
+  if (to.value.matched.length > 0 && !prerender) {
+    const matchedComponents:any = []
+    matchedRoute.forEach((route) => {
+      matchedComponents.push(...Object.values(route.components))
+    })
+    const asyncDataFuncs = matchedComponents.map((component:any) => {
+      const asyncData = component.asyncData || null
+      if (asyncData) {
+        const config = {
+          store: pinia,
+          route: to
+        }
+        return asyncData(config)
+      }
+    })
+    // 请求页面级别组件数据，异步需等待
+    await Promise.all(asyncDataFuncs)
+  }
+  // if (router.currentRoute.value.meta.store) {
+  //   const storeConfig: any = router.currentRoute.value.meta.store
+  //   const store = await import(`@/store/${storeConfig.storeModule}`)
+  //   await store[storeConfig.storeName]().getPageData()
+  // }
   // passing SSR context object which will be available via useSSRContext()
   // @vitejs/plugin-vue injects code into a component's setup() that registers
   // itself on ctx.modules. After the render, ctx.modules would contain all the

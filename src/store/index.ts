@@ -4,10 +4,14 @@ import { defineStore as defineMiniStore } from '../pinia/store'
 export const useIndexStore = defineStore('index', {
   state: () => {
     return {
+      ip: '',
       a: 'init state'
     }
   },
   actions: {
+    setIp (ip: string) {
+      this.ip = ip
+    },
     increment(v:string) {
       this.a = v
     },

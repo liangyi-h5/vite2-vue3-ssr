@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useAccessInfoStore } from '@/store/accessInfo';
 import { ref } from 'vue'
-
+const store = useAccessInfoStore()
 defineProps<{ msg: string }>()
 
 const count = ref(0)
@@ -8,6 +9,8 @@ const count = ref(0)
 
 <template>
   <h1>{{ msg }}</h1>
+  <h1>{{store.visits}}</h1>
+  <h1>{{store.numberOfVisits}}</h1>
 
   <p>
     Recommended IDE setup:

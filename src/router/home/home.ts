@@ -13,6 +13,10 @@ export default [
       metaInfo: {
         title: '首页',
         meta: `<meta property="首页 seo内容" content="内容">`
+      },
+      store: {
+        storeModule: 'accessInfo',
+        storeName: 'useAccessInfoStore'
       }
     },
     // beforeEnter: (to:any, from:any) => {

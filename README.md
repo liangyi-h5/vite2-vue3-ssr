@@ -31,6 +31,14 @@
 启动node服务
 > npm run start
 
+### 预渲染 静态网站打包
+
+该打包会针对每个页面进行打包生成html静态资源文件，请配置 src/router/prerenderRouter.json 文件针对需要打包处理的路由进行命名
+
+打包后会在项目根目下生成dist文件夹
+
+> npm run generate
+
 ## 完整的ts语法支持
 
 vscode插件安装

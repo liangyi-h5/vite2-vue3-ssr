@@ -15,7 +15,7 @@ export const createMiniPinia  = () => {
     install: (app:any) => {
       pinia._a = app
       app.provide(SymbolPinia, pinia)
-      console.log('Create mini pinia')
+      // console.log('Create mini pinia')
       app.config.globalProperties.$miniPinia = pinia
     },
     _p, // 插件在状态改变便利调用 例如：本地存储插件

@@ -506,3 +506,14 @@ export const deepClone = (obj: any) => {
     return obj
   }
 }
+
+/**
+ * @description isPromise
+ */
+export const isPromise = (cb: any) => {
+  return (
+    (!!cb && (typeof cb === 'object' || typeof cb === 'function') && typeof cb.then === 'function') ||
+    cb.__proto__.constructor.name === 'AsyncFunction' ||
+    cb.__proto__.constructor.name === 'Promise'
+  )
+}
