@@ -1,0 +1,1 @@
+import{u as t}from"./useTest.852e159d.js";import{d as e,c as s,t as a,o as n}from"./index.ac870ccb.js";const c={class:"home"},l=e({name:"about",setup(r){t(),console.log("about");const o="about";return(u,m)=>(n(),s("div",c,a(o)))}});export{l as default};

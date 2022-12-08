@@ -11,5 +11,6 @@ if (window.__INITIAL_STATE__) {
 // wait until router is ready before mounting to ensure hydration match
 router.isReady().then(() => {
   app.mount('#app')
+}).catch(err => {
+  console.log('读取路由失败-> ', err)
 })
-

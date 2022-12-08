@@ -2,6 +2,12 @@
 
 # 项目查看地址：<a href="http://124.220.185.110" >http://124.220.185.110/</a>
 
+### 如果项目模版对你们有用的话，希望能留下你们的小星星：
+ps: 你们星星是我最大的动力
+
+gitee: https://gitee.com/li_liang_xian/vite2-vue3-ssr
+
+github: https://github.com/liangyi-h5/vite2-vue3-ssr
 
 基于vite2 搭建的 express + vue3 服务端渲染项目
 
@@ -57,6 +63,10 @@ vscode插件安装
 
 关闭进程：
 > npm run pm2:stop
+
+## 需要配置eslint 请建立.env文件，配置相关参数
+
+> OPEN_SELINT=true
 
 ### .env环境变量配置
 在项目跟目录新建.env文件 参照.env.example修改环境变量配置

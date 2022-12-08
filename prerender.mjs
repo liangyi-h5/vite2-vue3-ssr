@@ -20,16 +20,17 @@ const { render } = await import(`./dist/server/${serverManifest['src/entry-serve
 ;(async () => {
   // pre-render each route...
   for (const url of routers) {
-    const [appHtml, preloadLinks, metaInfo, minipinia, pinia] = await render(url, manifest, {ip: ''}, true)
+    const [appHtml, preloadLinks, metaInfo, minipinia, pinia] = await render(url, manifest, { ip: '' }, true)
     const title = metaInfo.title || '未设置标题'
     const meta = metaInfo.meta || ''
 
     const html = template
-    .replace(`<!--preload-links-->`, preloadLinks)
-    .replace(`<!--ssr-outlet-->`, appHtml)
-    .replace(`<!--title-->`, title)
-    .replace(`<!--meta-->`, meta)
-    .replace(`<!--__INITIAL_STATE__-->`, `<script>window.__INITIAL_STATE__=${JSON.stringify(pinia.state.value)}</script>`)
+      .replace('<!--preload-links-->', preloadLinks)
+      .replace('<!--ssr-outlet-->', appHtml)
+      .replace('<!--title-->', title)
+      .replace('<!--meta-->', meta)
+      .replace('<!--__INITIAL_STATE__-->', `<script>window.__INITIAL_STATE__=${JSON.stringify(pinia.state.value)}</script>`)
+      .replace('<!--__MINI_PINIA_INITIAL_STATE__-->', `<script>window.__MINI_PINIA_INITIAL_STATE__=${JSON.stringify(minipinia.state.value)}</script>`)
 
     const filePath = `dist/static${url === '/' ? '/index' : url}.html`
     fs.writeFileSync(toAbsolute(filePath), html)

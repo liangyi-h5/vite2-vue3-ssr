@@ -1,7 +1,7 @@
 {
   "name": "ssr-vue",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.3",
   "author": "Liangxian Li",
   "scripts": {
     "serve": "vite",
@@ -17,14 +17,15 @@
     "generate": "vite build --ssrManifest --outDir dist/static && npm run build:prerender-server && node prerender.mjs",
     "start": "cross-env NODE_ENV=production node -r dotenv/config ./server/index.js",
     "debug": "node --inspect-brk ./server/index.js",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git commit -m 'docs: 更改CHANGELOG.md'",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add -A && git commit -m 'docs: 更改CHANGELOG.md'",
     "release-patch": "npm run pre-release && npm version patch -m \"tag: 版本更新至 %s patch\" && npm run branch-merge",
     "release-minor": "npm run pre-release && npm version minor -m \"tag: 版本更新至 %s minor\" && npm run branch-merge",
     "release-major": "npm run pre-release && npm version major -m \"tag: 版本更新至 %s major\" && npm run branch-merge",
     "pre-release": "git checkout develop && git pull && git checkout master && git pull && git merge develop ",
     "branch-merge": "git push --tags && git push && git checkout develop && git merge master && git push ",
     "pm2:start": "pm2 start ecosystem.config.js",
-    "pm2:stop": "pm2 delete all"
+    "pm2:stop": "pm2 delete all",
+    "lint": "eslint --ext .tsx,.ts,.vue --fix ./src -c .eslintrc.js"
   },
   "dependencies": {
     "axios": "^1.1.3",
@@ -45,14 +46,22 @@
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.22",
     "@types/vue-router": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@vitejs/plugin-vue": "^2.2.4",
     "@vitejs/plugin-vue-jsx": "^1.3.8",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
+    "eslint": "^8.28.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-vue": "^9.8.0",
     "rollup-plugin-visualizer": "^5.6.0",
     "ts-node": "^10.7.0",
-    "typescript": "^4.5.4",
+    "typescript": "^4.9.3",
     "vite": "^2.8.0",
+    "vite-plugin-eslint": "^1.8.1",
     "vue-tsc": "^0.29.8"
   }
 }

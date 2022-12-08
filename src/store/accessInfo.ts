@@ -10,7 +10,7 @@ export const useAccessInfoStore = defineStore('accessInfo', {
     }
   },
   actions: {
-    setData(state: {
+    setData (state: {
       visits: number
       numberOfVisits: number
     }) {
@@ -25,7 +25,7 @@ export const useAccessInfoStore = defineStore('accessInfo', {
         return res
       } catch (err) {
         console.log(err)
-        return Promise.resolve(err)
+        return await Promise.resolve(err)
       }
     }
     // getPageData () {
@@ -39,5 +39,5 @@ export const useAccessInfoStore = defineStore('accessInfo', {
     //     return Promise.reject(err)
     //   }
     // }
-  },
+  }
 })

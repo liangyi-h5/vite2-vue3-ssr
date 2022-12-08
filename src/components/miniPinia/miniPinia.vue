@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    mini + 
+    mini +
   </div>
 </template>
 
@@ -12,8 +12,8 @@ export default defineComponent({
   created () {
     console.log('created')
   },
-  mounted() {
+  mounted () {
     // console.log(this.$miniPinia.state, 'mounted')
-  },
+  }
 })
 </script>

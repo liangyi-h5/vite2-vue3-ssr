@@ -7,5 +7,5 @@ declare module '*.vue' {
   export default component
 }
 interface Window {
-  __INITIAL_STATE__: any;
+  __INITIAL_STATE__: any
 }

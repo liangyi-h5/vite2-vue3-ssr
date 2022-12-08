@@ -2,10 +2,12 @@
 import vuePlugin from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { visualizer } from 'rollup-plugin-visualizer'
+// @ts-ignore
 import { defineConfig } from 'vite'
 // @ts-ignore
 import path from 'path'
 // const path = require('path')
+import eslint from 'vite-plugin-eslint'
 
 const virtualFile = '@virtual-file'
 const virtualId = '\0' + virtualFile
@@ -15,6 +17,8 @@ const outputDir = path.join(process.cwd(), './server/dist')
 const isProd = process.env.NODE_ENV === 'production'
 
 const isClient = process.env.TARGET_ENV === 'client'
+
+const isOpenEslint = process.env.OPEN_SELINT === 'true'
 
 /**
  * @des 配置对应打包拆分输出名称
@@ -112,7 +116,8 @@ export default defineConfig(({ command, mode }) => {
           }
         }
       },
-      createVisualizer()
+      createVisualizer(),
+      isOpenEslint && eslint()
     ],
     resolve: {
       alias: {

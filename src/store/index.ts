@@ -12,20 +12,20 @@ export const useIndexStore = defineStore('index', {
     setIp (ip: string) {
       this.ip = ip
     },
-    increment(v:string) {
+    increment (v: string) {
       this.a = v
-    },
-  },
+    }
+  }
 })
 
-const $ = (v:any) => {
+const $ = (v: string | number) => {
   console.log($, 'currency')
   return `$${v}`
 }
-const r = (v:any) => {
-  console.log($, 'currency')
-  return `￥${v}`
-}
+// const r = (v: any) => {
+//   console.log($, 'currency')
+//   return `￥${v}`
+// }
 export const useminiPiniaStore = defineMiniStore('index', {
   state: () => {
     return {
@@ -37,9 +37,9 @@ export const useminiPiniaStore = defineMiniStore('index', {
   getters: {
   },
   actions: {
-    increment(v:string) {
+    increment (v: string) {
       // this.a = v
       // this.$t = r
-    },
-  },
+    }
+  }
 })

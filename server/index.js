@@ -2,20 +2,23 @@ const express = require('express')
 const { createProxyMiddleware } = require('http-proxy-middleware')
 const { createBundleRenderer } = require('./renderer')
 const hostApiRouter = require('./services/index')
-const bodyParser = require('body-parser');
-const initMiddleware = require('./middlewares/initMiddleware');
+const bodyParser = require('body-parser')
+const initMiddleware = require('./middlewares/initMiddleware')
+// import express from 'express'
+// import { createProxyMiddleware } from 'http-proxy-middleware'
+
 
 const PORT = process.env.PORT || 3000
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD
 const isProd = process.env.NODE_ENV === 'production'
 
-async function createServer(
-  root = process.cwd(),
+async function createServer (
+  root = process.cwd()
 ) {
   const app = express()
 
-  app.use(bodyParser.json()); // 处理 json 格式
-  app.use(bodyParser.urlencoded({ extended: false })); // 处理 urlencoded 格式
+  app.use(bodyParser.json()) // 处理 json 格式
+  app.use(bodyParser.urlencoded({ extended: false })) // 处理 urlencoded 格式
   app.use(initMiddleware)
   app.use('/api', hostApiRouter)
   const apiProxyBaseUrl = process.env.VITE_APP_API_BASE_URL
@@ -37,12 +40,12 @@ if (!isTest) {
       console.log(`\x1b[42;30m服务启动成功:\x1b[0;32m \x1b[4m${'http'}://localhost:${PORT}\x1b[0m`)
       if (!isProd) {
         const getIPAdress = () => {
-          let interfaces = require('os').networkInterfaces();
-          for (var devName in interfaces) {
-            var iface = interfaces[devName];
+          const interfaces = require('os').networkInterfaces()
+          for (const devName in interfaces) {
+            const iface = interfaces[devName]
             if (iface) {
-              for (var i = 0; i < iface.length; i++) {
-                let alias = iface[i];
+              for (let i = 0; i < iface.length; i++) {
+                const alias = iface[i]
                 if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
                   return alias.address
                 }

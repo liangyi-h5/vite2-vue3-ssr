@@ -1,12 +1,17 @@
 <template>
-<div class="mini-pinia">
-  <input type="text" v-model="text"><br/>
-  <button @click="btn">btn</button><br/>
-  <span>{{ministore.a}}</span><br/>
-  <span>{{ministore.$t('213')}}</span><br/>
-  <span>{{store.a }}</span><br/>
-  <MiniPiniaVue></MiniPiniaVue>
-</div>
+  <div class="mini-pinia">
+    <input
+      v-model="text"
+      type="text"
+    ><br>
+    <button @click="btn">
+      btn
+    </button><br>
+    <span>{{ ministore.a }}</span><br>
+    <span>{{ ministore.$t('213') }}</span><br>
+    <span>{{ store.a }}</span><br>
+    <MiniPiniaVue />
+  </div>
 </template>
 
 <script setup lang='ts'>

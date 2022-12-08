@@ -17,17 +17,17 @@ import about from './about/about'
 //         path: RegExpMatchArray === '/home' ? '/' : name,
 //         // component: pages[path] // () => import('./pages/*.vue')
 //         component: pages[path] // () => import('./pages/*.vue')
-//       } 
+//       }
 //     }
 //     a = [1].toLowerCase()
-    
+
 //   } else {
 //     return {}
 //   }
 // })
 
 const routes = [...home, ...about]
-export function createRouter() {
+export function createRouter () {
   return _createRouter({
     // use appropriate history implementation for server/client
     // import.meta.env.SSR is injected by Vite.

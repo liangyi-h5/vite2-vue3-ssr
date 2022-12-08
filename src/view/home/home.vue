@@ -1,10 +1,20 @@
 <template>
-  <div class='home'>
-    <img :src="getAssetsHomeFile('logo.png')" alt="3221qwrqw34"/><br/>
-    <img :src="img" alt="3221qwrqw34"/><br/>
-    <router-link to='/about'>about</router-link><br/>
-    <router-link to='/json-to-excel'>json to excel</router-link>
-    <HelloWorld msg="hello"></HelloWorld>
+  <div class="home">
+    <img
+      :src="getAssetsHomeFile('logo.png')"
+      alt="3221qwrqw34"
+    ><br>
+    <img
+      :src="img"
+      alt="3221qwrqw34"
+    ><br>
+    <router-link to="/about">
+      about
+    </router-link><br>
+    <router-link to="/json-to-excel">
+      json to excel
+    </router-link>
+    <HelloWorld msg="hello" />
   </div>
 </template>
 
@@ -30,8 +40,8 @@ export default defineComponent({
       }
     }
     return {
-      img: img,
-      getAssetsHomeFile: getAssetsHomeFile
+      img,
+      getAssetsHomeFile
     }
   },
   /**

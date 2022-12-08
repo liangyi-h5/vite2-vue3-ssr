@@ -1,7 +1,8 @@
 import { Pinia } from './types'
-
-export const SymbolPinia = Symbol()
-
+/**
+ * @description 唯一
+ */
+export const SymbolPinia = Symbol('mini-pinia')
 
 // 记录 Pinia并可以获取
 export let activePinia: Pinia | undefined

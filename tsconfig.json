@@ -17,6 +17,11 @@
       "@/*": ["./src/*"]
     }
   },
+  "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/explicit-function-return-type": "off"
+  },
+  "exclude": ["prerender.mjs", "vite.config.ts", "server/**/*"],
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/entry-server.ts", "src/router/prerenderRouter.js", "src/router/prerenderRouter.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

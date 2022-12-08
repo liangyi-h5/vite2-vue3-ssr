@@ -2,17 +2,17 @@ import { markRaw, effectScope, Ref, ref } from 'vue'
 import { SymbolPinia } from './rootStore'
 import { StateTree, Pinia } from './types'
 
-export const createMiniPinia  = () => {
-   // true 范围不会被外部effectScope收集和停止
-   const scope = effectScope(true)
+export const createMiniPinia = () => {
+  // true 范围不会被外部effectScope收集和停止
+  const scope = effectScope(true)
 
-   // run 方法的返回值就是这个fn的返回结果
-   const state = scope.run<Ref<Record<string, StateTree>>>(() => ref<Record<string, StateTree>>({}))!
- 
-   const _p: Pinia['_p'] = []
+  // run 方法的返回值就是这个fn的返回结果
+  const state = scope.run<Ref<Record<string, StateTree>>>(() => ref<Record<string, StateTree>>({}))!
+
+  const _p: Pinia['_p'] = []
   // 创建一个对象，使其用户不会成为代理
   const pinia = markRaw({
-    install: (app:any) => {
+    install: (app: any) => {
       pinia._a = app
       app.provide(SymbolPinia, pinia)
       // console.log('Create mini pinia')

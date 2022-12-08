@@ -4,5 +4,6 @@
     "module": "esnext",
     "moduleResolution": "node"
   },
+  "exclude": [".eslintrc.js", "server/**/*"],
   "include": ["vite.config.ts"]
 }

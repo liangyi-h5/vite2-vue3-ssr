@@ -1,8 +1,8 @@
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  * @desc 中间件初始化
  */
 module.exports = (req, res, next) => {

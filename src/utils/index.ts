@@ -7,8 +7,8 @@ export const roundingFn = (num: any) => {
   if (typeof num !== 'number') {
     return 0
   }
-  const n = parseInt(num * 10 + '') % 10
-  return n < 5 ? parseInt(num + '') : parseInt(num + '') + 1
+  const n = parseInt((num * 10).toString()) % 10
+  return n < 5 ? parseInt(num.toString()) : parseInt(num.toString()) + 1
 }
 
 /**
@@ -59,35 +59,35 @@ export const getUrlQueryString = (key: string) => {
  * @returns @des 浏览器基本信息
  */
 export const browserinfo = () => {
-  var u = navigator.userAgent
-  var ua = u.toLocaleLowerCase()
+  const u = navigator.userAgent
+  const ua = u.toLocaleLowerCase()
   return {
-    trident: u.indexOf('Trident') > -1, // IE内核
-    presto: u.indexOf('Presto') > -1, // opera内核
-    webKit: u.indexOf('AppleWebKit') > -1, // 苹果、谷歌内核
-    gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') === -1, // 火狐内核
-    mobile: !!u.match(/AppleWebKit.*Mobile.*/), // 是否为移动终端
-    ios: !!u.match(/\(i[^]+( U)? CPU.+Mac OS X/), // ios终端
-    android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, // android终端
-    iPhone: u.indexOf('iPhone') > -1, // 是否为iPhone或者QQHD浏览器
-    iPad: u.indexOf('iPad') > -1, // 是否iPad
-    webApp: u.indexOf('Safari') === -1, // 是否web应该程序，没有头部与底部
-    weixin: u.indexOf('MicroMessenger') > -1, // 是否微信
+    trident: u.includes('Trident'), // IE内核
+    presto: u.includes('Presto'), // opera内核
+    webKit: u.includes('AppleWebKit'), // 苹果、谷歌内核
+    gecko: u.includes('Gecko') && !u.includes('KHTML'), // 火狐内核
+    mobile: !(u.match(/AppleWebKit.*Mobile.*/) == null), // 是否为移动终端
+    ios: !(u.match(/\(i[^]+( U)? CPU.+Mac OS X/) == null), // ios终端
+    android: u.includes('Android') || u.includes('Adr'), // android终端
+    iPhone: u.includes('iPhone'), // 是否为iPhone或者QQHD浏览器
+    iPad: u.includes('iPad'), // 是否iPad
+    webApp: !u.includes('Safari'), // 是否web应该程序，没有头部与底部
+    weixin: u.includes('MicroMessenger'), // 是否微信
     qq: /\sQQ|\sqq/gi.test(u), // 是否QQ
     xiaomi: /MiuiBrowser/gi.test(u),
     fb: /FB/gi.test(u), // 是否是fb内置浏览器
     samsung: /SamsungBrowser/gi.test(u),
     isSafari:
-      ua.indexOf('applewebkit') > -1 &&
-      ua.indexOf('mobile') > -1 &&
-      ua.indexOf('safari') > -1 &&
-      ua.indexOf('linux') === -1 &&
-      ua.indexOf('android') === -1 &&
-      ua.indexOf('chrome') === -1 &&
-      ua.indexOf('ios') === -1 &&
-      ua.indexOf('browser') === -1, // 是否是 Safari
+      ua.includes('applewebkit') &&
+      ua.includes('mobile') &&
+      ua.includes('safari') &&
+      !ua.includes('linux') &&
+      !ua.includes('android') &&
+      !ua.includes('chrome') &&
+      !ua.includes('ios') &&
+      !ua.includes('browser'), // 是否是 Safari
     isQQbrowse:
-      ua.match(/tencenttraveler/) != null || ua.match(/qqbrowse/) != null, // qq 浏览器
+      ua.match(/tencenttraveler/) != null || ua.match(/qqbrowse/) != null // qq 浏览器
   }
 }
 
@@ -97,12 +97,12 @@ export const browserinfo = () => {
  * @param obj
  * @returns
  */
-export const splicingUrlParams = (url: string, obj: {[key: string]: string}) => {
+export const splicingUrlParams = (url: string, obj: { [key: string]: string }) => {
   let str = ''
   for (const key in obj) {
     str += '&' + key + '=' + window.encodeURIComponent(obj[key])
   }
-  if (url.indexOf('?') > -1) {
+  if (url.includes('?')) {
     url += str
   } else {
     url += '?' + str.replace(/^&/, '')
@@ -115,22 +115,22 @@ export const splicingUrlParams = (url: string, obj: {[key: string]: string}) => 
  */
 export const getLanguage = () => {
   let lang = 'en'
-  if (navigator && navigator.language) {
+  if (navigator.language) {
     lang = navigator.language.split('-')[0]
   }
-  return getUrlQueryString('language') + '' || lang || 'en'
+  return getUrlQueryString('language') || lang || 'en'
 }
 
 /**
  * @description base64编码
  */
 export const base64Encode = (str: string) => {
-  var c1, c2, c3
-  var base64EncodeChars =
+  let c1, c2, c3
+  const base64EncodeChars =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-  var i = 0
-  var len = str.length
-  var string = ''
+  let i = 0
+  const len = str.length
+  let string = ''
 
   while (i < len) {
     c1 = str.charCodeAt(i++) & 0xff
@@ -164,15 +164,15 @@ export const base64Encode = (str: string) => {
 export const base64Decode = (str: string) => {
   const _keyStr =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
-  var output = ''
-  var chr1, chr2, chr3
-  var enc1, enc2, enc3, enc4
-  var i = 0
-  var string = ''
-  var j = 0
-  var c = 0
-  var c3 = 0
-  var c2 = 0
+  let output = ''
+  let chr1, chr2, chr3
+  let enc1, enc2, enc3, enc4
+  let i = 0
+  let string = ''
+  let j = 0
+  let c = 0
+  let c3 = 0
+  let c2 = 0
   str = str.replace(/[^A-Za-z0-9+/=]/g, '')
   while (i < str.length) {
     enc1 = _keyStr.indexOf(str.charAt(i++))
@@ -243,20 +243,21 @@ const getRootDomain = () => {
  */
 export const setCookie = (name: string, value: string, day = 1) => {
   const domain = getRootDomain()
-  const expires = new Date(Date.now() + 60 * 1000 * 60 * 24 * day)
+  const expires = new Date(Date.now() + 60 * 1000 * 60 * 24 * day).toDateString()
   document.cookie = `${name}=${escape(
     value
-  )}domain=${domain}expires=${expires}path=/`
+  )};domain=${domain};expires=${expires};path=/`
 }
 
 /**
  * @description 获取cookies
  */
 export const getCookie = (name: string, decode = true) => {
-  var arr
-  var reg = new RegExp('(^| )' + name + '=([^]*)(|$)')
-  if ((arr = document.cookie.match(reg))) {
+  let arr
+  const reg = new RegExp('(^| )' + name + '=([^;]*)(|$)')
+  if (((arr = document.cookie.match(reg)) != null)) {
     let ls = unescape(arr[2])
+    console.log(arr, 'aee')
     if (decode) {
       ls = decodeURIComponent(ls)
     }
@@ -271,7 +272,7 @@ export const getCookie = (name: string, decode = true) => {
  */
 export const delCookie = (name: string) => {
   const rootDomain = getRootDomain()
-  document.cookie = `${name}= expires=Thu, 01 Jan 1970 00:00:01 GMT path=/domain=${rootDomain}`
+  document.cookie = `${name}= ;expires=Thu, 01 Jan 1970 00:00:01 GMT ;path=/;domain=${rootDomain}`
 }
 
 /**
@@ -427,7 +428,7 @@ export const deepClone = (obj: any) => {
   const isSet = checkIsSet(obj)
   if (isObject || isArray || isMap || isSet) {
     if (isObject) {
-      const newObj: {[key:string]: any} = {}
+      const newObj: { [key: string]: any } = {}
       for (const key in obj) {
         const value = obj[key]
         if (checkIsObject(value) || checkIsArray(value)) {
@@ -436,7 +437,7 @@ export const deepClone = (obj: any) => {
         } else if (checkIsMap(value)) {
           // map
           const newMap = new Map()
-          value.forEach((v:string, k: any) => {
+          value.forEach((v: string, k: any) => {
             // map类型的key不考虑深克隆，key可能为任意类型，只克隆value
             newMap.set(k, deepClone(v))
           })
@@ -456,7 +457,7 @@ export const deepClone = (obj: any) => {
       return newObj
     } else if (isArray) {
       const newArray: any[] = []
-      obj.forEach((item:any, index: number) => {
+      obj.forEach((item: any, index: number) => {
         const value = item
         if (checkIsObject(value) || checkIsArray(value)) {
           // 对象或者数组
@@ -513,6 +514,7 @@ export const deepClone = (obj: any) => {
 export const isPromise = (cb: any) => {
   return (
     (!!cb && (typeof cb === 'object' || typeof cb === 'function') && typeof cb.then === 'function') ||
+    // eslint-disable-next-line no-proto
     cb.__proto__.constructor.name === 'AsyncFunction' ||
     cb.__proto__.constructor.name === 'Promise'
   )

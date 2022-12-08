@@ -1,14 +1,24 @@
 <template>
-  <div class='json-to-excel'>
-    <textarea v-model="text" class='textarea'></textarea><br/>
-    <button @click='onJsonToExcel'>json to excel</button><br/>
-    <input id='ipt' accept='.json' type="file" @change='onExcelToJson' />excel to json<br/>
+  <div class="json-to-excel">
+    <textarea
+      v-model="text"
+      class="textarea"
+    /><br>
+    <button @click="onJsonToExcel">
+      json to excel
+    </button><br>
+    <input
+      id="ipt"
+      accept=".json"
+      type="file"
+      @change="onExcelToJson"
+    >excel to json<br>
   </div>
 </template>
 
 <script setup lang='ts'>
 import { ref, onMounted } from 'vue'
-import { read, writeFileXLSX, utils } from 'xlsx'
+import { writeFileXLSX, utils } from 'xlsx'
 import { checkIsJson, checkIsArray, checkIsObject, checkIsString } from '../../utils'
 // console.log('json-to-excel', read, writeFileXLSX)
 import { useTest } from '../../hook/useTest'
@@ -23,17 +33,17 @@ const onJsonToExcel = () => {
   if (checkIsJson(str)) {
     const list = JSON.parse(str)
     if (checkIsArray(list)) {
-      for(let i = 0; i < list.length; i++) {
+      for (let i = 0; i < list.length; i++) {
         if (checkIsObject(list[i])) {
           for (const key in list[i]) {
             if (!checkIsString(list[i][key])) {
-              alert(`错误，必须是[{ "en": "Daily check-in", "zh": "中文"}, { "en": "1st", "zh": "中文3"}] 类型json字符串`)
+              alert('错误，必须是[{ "en": "Daily check-in", "zh": "中文"}, { "en": "1st", "zh": "中文3"}] 类型json字符串')
               return
             }
           }
         } else {
+          alert('错误，必须是[{ "en": "Daily check-in", "zh": "中文"}, { "en": "1st", "zh": "中文3"}] 类型json字符串')
           return
-          alert(`错误，必须是[{ "en": "Daily check-in", "zh": "中文"}, { "en": "1st", "zh": "中文3"}] 类型json字符串`)
         }
       }
       const ws = utils.json_to_sheet(list)
@@ -45,17 +55,14 @@ const onJsonToExcel = () => {
       }
       writeFileXLSX(workbook, 't.excel')
     } else {
-      return
       alert('错误，不是一个规范的json字符串')
     }
   } else {
-    return
     alert('错误，不是一个规范的json字符串')
   }
-  
 }
 const onExcelToJson = (e:any) => {
-    console.log('change', e)
+  console.log('change', e)
 }
 onMounted(() => {
   const ipt = document.querySelector('#ipt')

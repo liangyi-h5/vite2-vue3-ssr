@@ -9,12 +9,9 @@ const resolve = (p) => path.resolve(__dirname, p)
  * @type {import('vite').ViteDevServer}
  */
 let vite
-let createServerRes = {}
-
-const manifest = isProd
-? // @ts-ignore
-  require('../dist/client/ssr-manifest.json')
-: {}
+const createServerRes = {}
+// @ts-ignore
+const manifest = isProd ? require('../dist/client/ssr-manifest.json') : {}
 
 const entryServer = isProd
   // @ts-ignore
@@ -46,11 +43,12 @@ const render = async (req, res) => {
     const title = metaInfo.title || '未设置标题'
     const meta = metaInfo.meta || ''
     const html = template
-      .replace(`<!--preload-links-->`, preloadLinks)
-      .replace(`<!--ssr-outlet-->`, appHtml)
-      .replace(`<!--title-->`, title)
-      .replace(`<!--meta-->`, meta)
-      .replace(`<!--__INITIAL_STATE__-->`, `<script>window.__INITIAL_STATE__=${JSON.stringify(pinia.state.value)}</script>`)
+      .replace('<!--preload-links-->', preloadLinks)
+      .replace('<!--ssr-outlet-->', appHtml)
+      .replace('<!--title-->', title)
+      .replace('<!--meta-->', meta)
+      .replace('<!--__INITIAL_STATE__-->', `<script>window.__INITIAL_STATE__=${JSON.stringify(pinia.state.value)}</script>`)
+      .replace('<!--__MINI_PINIA_INITIAL_STATE__-->', `<script>window.__MINI_PINIA_INITIAL_STATE__=${JSON.stringify(minipinia.state.value)}</script>`)
 
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (e) {
@@ -61,35 +59,35 @@ const render = async (req, res) => {
 }
 
 module.exports.createBundleRenderer = async (app, root, isTest) => {
-   if (!isProd) {
-     vite = await require('vite').createServer({
-       root: root,
-       logLevel: isTest ? 'error' : 'info',
-       server: {
-         middlewareMode: 'ssr',
-         watch: {
-           // During tests we edit the files too fast and sometimes chokidar
-           // misses change events, so enforce polling for consistency
-           usePolling: true,
-           interval: 100
-         }
-       }
-     })
-     // 服务端获取vite 的env
-     console.log(vite.config.env, 'vite env')
-     // use vite's connect instance as middleware
-     app.use(vite.middlewares)
-     createServerRes.vite = vite
-   } else {
-     app.use(require('compression')())
-     app.use(
-       require('serve-static')(resolve('../dist/client'), {
-         index: false
-       })
-     )
-   }
+  if (!isProd) {
+    vite = await require('vite').createServer({
+      root,
+      logLevel: isTest ? 'error' : 'info',
+      server: {
+        middlewareMode: 'ssr',
+        watch: {
+          // During tests we edit the files too fast and sometimes chokidar
+          // misses change events, so enforce polling for consistency
+          usePolling: true,
+          interval: 100
+        }
+      }
+    })
+    // 服务端获取vite 的env
+    console.log(vite.config.env, 'vite env')
+    // use vite's connect instance as middleware
+    app.use(vite.middlewares)
+    createServerRes.vite = vite
+  } else {
+    app.use(require('compression')())
+    app.use(
+      require('serve-static')(resolve('../dist/client'), {
+        index: false
+      })
+    )
+  }
 
-   app.use('*', render)
-   createServerRes.app = app
-   return createServerRes
+  app.use('*', render)
+  createServerRes.app = app
+  return createServerRes
 }
